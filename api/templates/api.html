@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  API
+{% endblock %}
+
+{% block heading %}
+{% if request.user.is_authenticated %}
+   <h1 class="hy-heading">
+   Hy,
+</h1>
+<h1 class="name-heading">
+   {{request.user.username}}!!!
+</h1><br>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+ <style>
+h3{
+  color: #000;
+}
+.textmessage{
+ font-size: 18px;
+ font-weight: 500;
+ color: #424242;
+ align-text: center;
+}
+.clipboard{
+  position: relative;
+  left: 130px;
+}
+.ApiToken{
+  position: relative;
+  width: 270px;
+  color: #607d8b;
+}
+.clipboard {
+  position: relative;
+  left: 105px;
+}
+</style>
+
+    <p>
+    <h3 style="color:#7e57c2;"> Your API Token key : </h3>
+    <input type="text" class="ApiToken" value="{{Api_Token}}" id="ApiToken" placeholder="Refresh once,if you don't see anything here." readonly><br><br>
+    <button class="clipboard" onclick="CopyLink()">Copy</button><br>
+  </p>
+  <script>
+    var copylink = document.querySelector('.ApiToken');
+    function CopyLink(){
+       var copylink = document.getElementById("ApiToken");
+       copylink.select();
+       document.execCommand("copy");
+       console.log(copylink.value);
+       copylink.setSelectionRange(0, 99999); 
+       navigator.clipboard.writeText(copylink.value);
+       alert("Copied the text: " + copylink.value);
+    }
+ </script>
+ 
+ <div class="api_urls">
+ 
+<!-- API URLS OVERVIEW -->
+ <p style="font-weight:500; font-size:20px; color:#000;"> API urls :-</p>
+ 
+ <p style="color:#424242;"> { </p>
+  <p style="color:#000; font-weight:390; font-size:13px;">
+  
+   <create style="color:#00b0ff;"> Create Message </create> : <response style="color:#ff5252;">{{create_message}}</response><br><br>
+   
+   <show style="color:#00b0ff;"> Show Message </show> : <response style="color:#ff5252;">{{show_message}}</response><br><br>
+   
+   <history style="color:#00b0ff;"> Message History </history> : <response style="color:#ff5252;">{{message_history}}</response>
+   
+  </p>
+ <p style="color:#424242;"> } </p>
+
+</div> 
+
+<div style="color:#ec407a; font-weight:600;">
+<span class="iconify" data-icon="icon-park:source-code"></span>
+Python Sample Codes :
+</div>
+
+<!-- CREATE MESSAGE SAMPLE CODE -->
+<p style="font-weight:600; font-size:30px; color:#263238;"> Create Message :- </p>
+ <pre class="prettyprint" style="text-shadow:none;"><code class="language-python">
+import request
+
+# Add Your Token Key in the header
+header = {
+    "Authorization" : "Token YOUR_TOKEN_KEY"
+   }
+
+# THIS REQUEST MUST BE A "POST" REQUEST
+def message_create(url):
+    # For creating the message you need to give some information inorder to create the message
+    data = {
+        "body" : "YOUR TEXT MESSAGE",
+        # You can give it None if you don't want to attach any file
+        "file" : YOUR FILE IF ANY.../None,
+        "password" : "CREATE THE PASSWORD FOR THIS MESSAGE"
+        }
+    
+    response = requests.post(
+                url, 
+                headers = header, 
+                data = data
+            )
+            
+    # You can get the response either in Text or Json formate.You can use other libraries to make it print in a pretty way.
+    return response.json()
+    #return response.text()
+
+message_create("URL")
+</code>
+ </pre>
+ 
+<!-- SHOW MESSAGE SAMPLE CODE -->
+<p style="font-weight:600; font-size:30px; color:#263238;"> Show Message :- </p>
+ <pre class="prettyprint" style="text-shadow:none;"><code class="language-python">
+import request
+
+# Add Your Token Key in the header
+header = {
+    "Authorization" : "Token YOUR_TOKEN_KEY"
+   }
+
+# THIS REQUEST MUST BE A "POST" REQUEST
+def show_message(message_url): 
+    url = message_url
+    
+    # You have to enter the "password" if you are trying to view the message of other person. 
+    data = {
+      "password" : "MESSAGE_PASSWORD"
+    }
+   
+   # Avoiding Error by using this method.
+   # Here, It'll try to access the message by entering the "password " if the message belongs to other person.
+    try:
+        response = requests.post(
+                    url,
+                    headers = header,
+                    data = data
+                )
+    # Otherwise, It'll show you the message directly without having the password, if the message belongs to yourself.
+    except:
+        response = requests.post(
+                    url,
+                    headers = header
+                )
+    
+    # You can get the response either in Text or Json formate.You can use other libraries to make it print in a pretty way.
+    return response.json()
+    #return response.text()
+
+show_message("URL")
+</code> 
+</pre>
+
+<!-- MESSAGE HISTORY SAMPLE CODE -->
+<p style="font-weight:600; font-size:30px; color:#263238;"> Message History :- </p>
+ <pre class="prettyprint" style="text-shadow:none;"><code class="language-python">
+import request
+
+# Add Your Token Key in the header
+header = {
+    "Authorization" : "Token YOUR_TOKEN_KEY"
+   }
+
+# THIS REQUEST MUST BE A "GET" REQUEST
+def message_history(url):
+    response = requests.get(
+                    url,
+                    headers = header
+                )
+    
+    # You can get the response either in Text or Json formate.You can use other libraries to make it print in a pretty way.
+    return response.json()
+    #return response.text()
+    
+message_history("URL")
+</code>
+</pre>
+
+{% endif %}
+{% endblock %}

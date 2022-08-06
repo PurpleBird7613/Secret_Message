@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Message Display
+{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+ {% block heading %}
+
+{% if user == message.author %}
+   <h1 class="hy-heading">
+   Hy,
+</h1>
+<h1 class="name-heading">
+   {{request.user.username}}!!!
+</h1><br>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+ 
+ {% if user == message.author %}
+ <style>
+ .card{
+ position: relative;
+  background-color: var(--bg-color);
+  border-radius: 40px;
+  box-shadow: -2px -2px 4px 0px #ffffff, 50px 50px 50px 0px rgba(0, 0, 0, .25);
+  display: block;
+  flex: 1;
+  min-height: 100px;
+  max-width: 500px;
+  margin-bottom: 25px; 
+  overflow: hidden;
+  padding: 30px;
+  color: #000;
+  justify-content: center;
+  align-item: center;
+  align-text: center;
+  align-content: center;
+  justify-item: center;
+}
+.textmessage{
+ font-size: 18px;
+ font-weight: 500;
+ color: #424242;
+ align-text: center;
+}
+.clipboard{
+  position: relative;
+  left: 100px;
+}
+.messagelink{
+  position: relative;
+  width: 300px;
+  color: #607d8b;
+}
+.messagepassword{
+  position: relative;
+  width: 300px;
+  color: #607d8b;
+}
+.info{
+ color: #424242;
+}
+
+</style>
+   <div class="app-top-bar">
+    <h1 class="app-heading">Your Message</h1>
+  </div>
+
+ {% if message.body %}
+ <div class="textmessage">
+   {{message.body}}
+ </div><br>
+{% endif %}
+
+{% if message.file %}
+ <div class="download" style="margin-bottom: 1rem;">
+ <a href="{{message.file.url}}">
+<button type="submit">
+  <span class="iconify" data-icon="system-uicons:file-download"></span>
+  Download File</button>
+ </a>
+</div>
+{% endif %}
+
+<div class="card">
+  <p>
+    <h3 style="color:#7e57c2;"> Message Link : </h3>
+    <div class="info">
+      You can share this link to anyone,whom you want to see this message.</div>
+    <input type="text" class="messagelink" value="{{link}}" id="messagelink" readonly><br><br>
+    <button class="clipboard" onclick="CopyLink()">Copy</button><br>
+  </p>
+  <script>
+    var copylink = document.querySelector('.messagelink');
+    function CopyLink(){
+       var copylink = document.getElementById("messagelink");
+       copylink.select();
+       document.execCommand("copy");
+       console.log(copylink.value);
+       copylink.setSelectionRange(0, 99999); 
+       navigator.clipboard.writeText(copylink.value);
+       alert("Copied the text: " + copylink.value);
+    }
+ </script>
+ 
+  <p>
+    <h3 style="color:#7e57c2;"> Message Password : </h3>
+    <div class="info">
+      This is the password using which, others can access this message.</div>
+    <input type="text" class="messagepassword" value="{{message.password}}" id="messagepassword" readonly><br><br>
+    <button class="clipboard" onclick="CopyPassword()">Copy</button>
+  </p>
+  <script>
+    var copypassword = document.querySelector('.messagepassword');
+    function CopyPassword(){
+       var copypassword = document.getElementById("messagepassword");
+       copypassword.select();
+       document.execCommand("copy");
+       console.log(copypassword.value);
+       copypassword.setSelectionRange(0, 99999); 
+       navigator.clipboard.writeText(copypassword.value);
+       alert("Copied the text: " + copypassword.value);
+    }
+ </script>
+  
+</div>
+
+{% else %}
+
+<style>
+.app-container {
+  margin-top: 160px;
+}
+.result{
+  position: relative;
+  color: #000;
+  justify-content: centre;
+ align-items: center;
+ align-text: center;
+}
+.card{
+ position: relative;
+  background-color: var(--bg-color);
+  border-radius: 40px;
+  box-shadow: -2px -2px 4px 0px #ffffff, 50px 50px 50px 0px rgba(0, 0, 0, .25);
+  display: block;
+  flex: 1;
+  min-height: 100px;
+  max-width: 400px;
+  margin-bottom: 25px; 
+  overflow: hidden;
+  padding: 30px;
+  justify-content: centre;
+ align-items: center;
+ align-text: center;
+  
+}
+</style>
+ <div class="card">
+    <div class="result" id="result"></div>
+ </div>
+    <br>
+      <input class="password" id="password" name="password" type="password" placeholder=" Enter Password"/>
+  <br><br>
+   <button type="button" class="black" onclick="show_message()"><i class="icon ion-md-lock"></i>Show Message</button>
+
+{% endif %}
+
+{% endblock %}
+
+  
+          
+

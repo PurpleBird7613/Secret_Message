@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Give Link
+{% endblock %}
+
+{% block heading %}
+{% if request.user.is_authenticated %}
+   <h1 class="hy-heading">
+   Hy,
+</h1>
+<h1 class="name-heading">
+   {{request.user.username}}!!!
+</h1><br>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+ 
+{% if user.is_authenticated %}
+ <style>
+h3{
+  color: #000;
+}
+.textmessage{
+ font-size: 18px;
+ font-weight: 500;
+ color: #424242;
+ align-text: center;
+}
+.clipboard{
+  position: relative;
+  left: 130px;
+}
+.messagelink{
+  position: relative;
+  width: 350px;
+  color: #607d8b;
+}
+.messagepassword{
+  position: relative;
+  width: 350px;
+  color: #607d8b;
+}
+.info{
+ color: #424242;
+}
+
+</style>
+
+  <p>
+    <h3 style="color:#7e57c2;"> Message Link : </h3>
+   <div class="info">
+    Now you can share this link to anyone,whom you want to see this message.</div>
+    <input type="text" class="messagelink" value="{{link}}" id="messagelink" readonly><br><br>
+    <button class="clipboard" onclick="CopyLink()">Copy</button><br>
+  </p>
+  <script>
+    var copylink = document.querySelector('.messagelink');
+    function CopyLink(){
+       var copylink = document.getElementById("messagelink");
+       copylink.select();
+       document.execCommand("copy");
+       console.log(copylink.value);
+       copylink.setSelectionRange(0, 99999); 
+       navigator.clipboard.writeText(copylink.value);
+       alert("Copied the text: " + copylink.value);
+    }
+ </script>
+ 
+  <p>
+  {% for message in message %}
+    <h3 style="color:#7e57c2;"> Message Password : </h3>
+    <div class="info">
+      This is the password using which, others can access this message.</div>
+    <input type="text" class="messagepassword" value="{{message.password}}" id="messagepassword" readonly><br><br>
+    <button class="clipboard" onclick="CopyPassword()">Copy</button>
+  {% endfor %}
+  </p>
+  <script>
+    var copypassword = document.querySelector('.messagepassword');
+    function CopyPassword(){
+       var copypassword = document.getElementById("messagepassword");
+       copypassword.select();
+       document.execCommand("copy");
+       console.log(copypassword.value);
+       copypassword.setSelectionRange(0, 99999); 
+       navigator.clipboard.writeText(copypassword.value);
+       alert("Copied the text: " + copypassword.value);
+    }
+ </script>
+
+
+{% endif %}
+{% endblock %}
