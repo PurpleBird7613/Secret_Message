@@ -51,7 +51,7 @@ This WebApp allows you to create messages and set a password to your messages, s
 ```
 import request
 
-url = "Your Url"
+url = "API Url"
 
 # Add Your Token Key in the header
 header = {
@@ -77,7 +77,7 @@ print(response.json())
 ```
 import request
 
-url = "Your Url"
+url = "API Url"
 
 # Add Your Token Key in the header
 header = {
@@ -109,7 +109,7 @@ print(response.json())
 ```
 import request
 
-url = "Your Url"
+url = "API Url"
 
 # Add Your Token Key in the header
 header = {
@@ -130,5 +130,5 @@ print(response.json())
 
 ## Author
 
-- [@PurpleBird7613](https://github.com/PurpleBird7613)
+- [@PurpleBird7613](https://purplebird.pythonanywhere.com/)
 
